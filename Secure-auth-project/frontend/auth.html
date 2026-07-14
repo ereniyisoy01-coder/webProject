@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authentication</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Authentication</h2>
+
+  <!-- IMAGE AUTH -->
+  <div id="imageAuthSection" style="display:none;">
+    <p>Select the image you chose during registration:</p>
+    <div id="imageContainer"></div>
+  </div>
+
+  <!-- KEYWORD AUTH -->
+  <div id="keywordAuthSection" style="display:none;">
+    <p>Enter the keyword you chose during registration:</p>
+    <input type="text" id="keywordInput" placeholder="Enter your keyword">
+    <button onclick="verifyKeyword()">Verify Keyword</button>
+  </div>
+
+  <p id="message"></p>
+
+</div>
+
+<script>
+
+const API = "http://localhost:5000/api/auth";
+const username = localStorage.getItem("pendingUser");
+const authMethod = localStorage.getItem("authMethod") || "image";
+
+if (authMethod === "keyword") {
+  document.getElementById("keywordAuthSection").style.display = "block";
+} else {
+  document.getElementById("imageAuthSection").style.display = "block";
+  loadImages();
+}
+
+async function loadImages() {
+
+  try {
+    const res = await fetch(`${API}/login-images`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      document.getElementById("message").innerText = data.message;
+      return;
+    }
+
+    const container = document.getElementById("imageContainer");
+    container.innerHTML = "";
+
+    data.images.forEach(imgName => {
+      const img = document.createElement("img");
+      img.src = `images/${imgName}`;
+      img.alt = imgName;
+      img.onclick = () => verify(imgName);
+      container.appendChild(img);
+    });
+  } catch (err) {
+    document.getElementById("message").innerText = "Connection error";
+  }
+}
+
+async function verify(image) {
+
+  try {
+    const res = await fetch(`${API}/verify-image`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, image })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("message").innerText = data.message;
+    document.getElementById("message").style.color = res.ok ? "green" : "red";
+
+    if (res.ok) {
+      localStorage.removeItem("pendingUser");
+      localStorage.removeItem("authMethod");
+      window.location.href = "dashboard.html";
+    }
+  } catch (err) {
+    document.getElementById("message").innerText = "Connection error";
+  }
+}
+
+async function verifyKeyword() {
+
+  const keyword = document.getElementById("keywordInput").value;
+
+  try {
+    const res = await fetch(`${API}/verify-keyword`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, keyword })
+    });
+
+    const data = await res.json();
+
+    document.getElementById("message").innerText = data.message;
+    document.getElementById("message").style.color = res.ok ? "green" : "red";
+
+    if (res.ok) {
+      localStorage.removeItem("pendingUser");
+      localStorage.removeItem("authMethod");
+      window.location.href = "dashboard.html";
+    }
+  } catch (err) {
+    document.getElementById("message").innerText = "Connection error";
+  }
+}
+
+</script>
+
+</body>
+</html>

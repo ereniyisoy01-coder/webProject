@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Login System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Secure Login System</h1>
+
+  <!-- LOGIN -->
+  <div id="loginSection">
+
+    <h2>Login</h2>
+
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p class="link" onclick="showForgot()">Forgot Login ID or Password?</p>
+    <p class="link" onclick="showRegister()">Create Account</p>
+
+    <p id="authMessage"></p>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerSection" style="display:none;">
+
+    <h2>Create Account</h2>
+
+    <input type="text" id="regUsername" placeholder="Username">
+    <input type="email" id="regEmail" placeholder="Email">
+
+    <input type="password" id="regPassword" placeholder="Password" oninput="checkStrength()">
+    <div id="strengthBarContainer">
+      <div id="strengthBar"></div>
+    </div>
+    <p id="strengthText"></p>
+
+    <h3>Select Authentication Image</h3>
+    <div class="imageSelect" id="imageSelectContainer">
+      <img src="images/cat.jpg" onclick="selectImage('cat.jpg', this)" alt="Cat">
+      <img src="images/dog.jpg" onclick="selectImage('dog.jpg', this)" alt="Dog">
+      <img src="images/car.jpg" onclick="selectImage('car.jpg', this)" alt="Car">
+      <img src="images/tree.jpg" onclick="selectImage('tree.jpg', this)" alt="Tree">
+      <img src="images/beach.jpg" onclick="selectImage('beach.jpg', this)" alt="Beach">
+      <img src="images/moon.jpg" onclick="selectImage('moon.jpg', this)" alt="Moon">
+    </div>
+    <input type="hidden" id="authImage" value="">
+
+    <h3>Authentication Keyword</h3>
+    <input type="text" id="authKeyword" placeholder="Enter a secret keyword">
+
+    <h3>Security Questions</h3>
+
+    <select id="q1">
+      <option value="What is your first pet's name?">What is your first pet's name?</option>
+      <option value="What city were you born in?">What city were you born in?</option>
+      <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+    </select>
+    <input id="a1" placeholder="Answer">
+
+    <select id="q2">
+      <option value="What is your favorite food?">What is your favorite food?</option>
+      <option value="What was your first car?">What was your first car?</option>
+      <option value="What is your favorite movie?">What is your favorite movie?</option>
+    </select>
+    <input id="a2" placeholder="Answer">
+
+    <select id="q3">
+      <option value="What is your dream job?">What is your dream job?</option>
+      <option value="What is your favorite book?">What is your favorite book?</option>
+      <option value="What school did you attend?">What school did you attend?</option>
+    </select>
+    <input id="a3" placeholder="Answer">
+
+    <p id="captchaQuestion"></p>
+    <input id="captchaAnswer" placeholder="Captcha Answer">
+
+    <button onclick="register()">Register</button>
+
+    <p class="link" onclick="showLogin()">Back to Login</p>
+
+    <p id="registerMessage"></p>
+  </div>
+
+  <!-- FORGOT -->
+  <div id="forgotSection" style="display:none;">
+
+    <h2>Forgot Login ID or Password</h2>
+
+    <p class="link" onclick="showForgotUsername()">Forgot Username</p>
+    <p class="link" onclick="showReset()">Forgot Password</p>
+    <p class="link" onclick="showLogin()">Back to Login</p>
+  </div>
+
+  <!-- FORGOT USERNAME -->
+  <div id="forgotUsernameSection" style="display:none;">
+
+    <h2>Forgot Username</h2>
+
+    <input type="email" id="forgotUsernameEmail" placeholder="Enter your email">
+
+    <button onclick="forgotUsername()">Send Username to Email</button>
+
+    <p class="link" onclick="showLogin()">Back to Login</p>
+
+    <p id="forgotUsernameMessage"></p>
+  </div>
+
+  <!-- RESET -->
+  <div id="resetSection" style="display:none;">
+
+    <h2>Reset Password</h2>
+
+    <input type="email" id="resetEmail" placeholder="Email">
+
+    <h3>Option A: Answer Security Questions</h3>
+
+    <button onclick="loadQuestions()">Load Security Questions</button>
+
+    <p id="qDisplay1"></p>
+    <input id="ans1" placeholder="Answer 1">
+
+    <p id="qDisplay2"></p>
+    <input id="ans2" placeholder="Answer 2">
+
+    <p id="qDisplay3"></p>
+    <input id="ans3" placeholder="Answer 3">
+
+    <button onclick="verifySecurity()">Verify Answers</button>
+
+    <div id="resetPasswordFields" style="display:none;">
+      <input type="password" id="newPassword" placeholder="New Password" oninput="checkResetStrength()">
+      <div id="resetStrengthBarContainer">
+        <div id="resetStrengthBar"></div>
+      </div>
+      <p id="resetStrengthText"></p>
+      <button onclick="resetPassword()">Reset Password</button>
+    </div>
+
+    <hr>
+
+    <h3>Option B: Send Reset Link to Email</h3>
+
+    <button onclick="sendResetLink()">Send Reset Link</button>
+
+    <p class="link" onclick="showLogin()">Back to Login</p>
+
+    <p id="resetMessage"></p>
+  </div>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

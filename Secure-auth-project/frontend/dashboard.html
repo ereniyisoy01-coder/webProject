@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Dashboard</h1>
+
+  <p>
+    Welcome! Authentication successful.
+  </p>
+
+  <button onclick="logout()">
+    Logout
+  </button>
+
+</div>
+
+<script>
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
